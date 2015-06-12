@@ -1,0 +1,51 @@
+﻿@{
+    ViewBag.Title = "Home";
+    var currentUser = Membership.GetUser(User.Identity.Name);
+    if (currentUser == null)
+    {
+        Response.Redirect("~/Account/Login");
+    }
+    var userName = currentUser.UserName;
+    List<SelectListItem> twitterSecretsMap = new List<SelectListItem>() ;
+    try
+    {
+        var context = new Social_media_access.SocialMediaEntities();
+        context.TwitterSecrets.ToList().ForEach(i => twitterSecretsMap.Add(new SelectListItem() { 
+            Text = i.Nick,
+            Value = i.Nick
+        }));
+    }
+    catch (Exception ex) { }
+}
+<section class="sm-content">
+    <div class="modal fade" id="twitterModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Select an action</h4>
+                </div>
+                <div class="modal-body">
+                    <a href="/Twitter/Add">Add</a> a twitter account: <br />
+                    Go to @Html.DropDownList("Nick", twitterSecretsMap) <button id="ProfileBtn">Go</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="sm-sub-container">
+        <div>
+            <a href="#" class="sm-icon sm-fb"></a>
+        </div>
+        <div>
+            <a href="#" class="sm-icon sm-twitter" data-toggle="modal" data-target="#twitterModal"></a>
+        </div>
+        <div>
+            <a href="#" class="sm-icon sm-linkedin"></a>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $("#ProfileBtn").click(function () {
+            window.location.replace("/Home/Profile?Nick="+$("#Nick").val());
+        });
+    </script>
+</section>

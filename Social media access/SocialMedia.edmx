@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="SocialMediaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Tweets">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Author" Type="nvarchar" MaxLength="50" />
+          <Property Name="Text" Type="nvarchar(max)" />
+          <Property Name="Status" Type="nvarchar" MaxLength="50" />
+          <Property Name="TimeStamp" Type="datetime" />
+        </EntityType>
+        <EntityType Name="TwitterSecrets">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AccessToken" Type="nvarchar(max)" />
+          <Property Name="AccessTokenSecret" Type="nvarchar(max)" />
+          <Property Name="ConsumerKey" Type="nvarchar(max)" />
+          <Property Name="ConsumerSecret" Type="nvarchar(max)" />
+          <Property Name="UserId" Type="nvarchar(max)" />
+          <Property Name="Nick" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityContainer Name="SocialMediaModelStoreContainer">
+          <EntitySet Name="Tweets" EntityType="Self.Tweets" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TwitterSecrets" EntityType="Self.TwitterSecrets" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SocialMediaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Tweet">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Author" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TimeStamp" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityContainer Name="SocialMediaEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Tweets" EntityType="Self.Tweet" />
+          <EntitySet Name="TwitterSecrets" EntityType="SocialMediaModel.TwitterSecret" />
+        </EntityContainer>
+        <EntityType Name="TwitterSecret">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AccessToken" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AccessTokenSecret" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ConsumerKey" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ConsumerSecret" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Nick" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SocialMediaModelStoreContainer" CdmEntityContainer="SocialMediaEntities">
+          <EntitySetMapping Name="Tweets">
+            <EntityTypeMapping TypeName="SocialMediaModel.Tweet">
+              <MappingFragment StoreEntitySet="Tweets">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Author" ColumnName="Author" />
+                <ScalarProperty Name="Text" ColumnName="Text" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TwitterSecrets">
+            <EntityTypeMapping TypeName="SocialMediaModel.TwitterSecret">
+              <MappingFragment StoreEntitySet="TwitterSecrets">
+                <ScalarProperty Name="Nick" ColumnName="Nick" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ConsumerSecret" ColumnName="ConsumerSecret" />
+                <ScalarProperty Name="ConsumerKey" ColumnName="ConsumerKey" />
+                <ScalarProperty Name="AccessTokenSecret" ColumnName="AccessTokenSecret" />
+                <ScalarProperty Name="AccessToken" ColumnName="AccessToken" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

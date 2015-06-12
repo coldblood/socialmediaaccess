@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<local:Workflow1 mva:VisualBasic.Settings="Assembly references and imported namespaces for internal implementation" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:local="clr-namespace:WorkflowConsoleApplication7;assembly=Social media access" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mda="clr-namespace:Microsoft.Data.Activities;assembly=Microsoft.Data.Activities" xmlns:mv="clr-namespace:Microsoft.VisualBasic;assembly=System" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:s1="clr-namespace:System;assembly=System" xmlns:s2="clr-namespace:System;assembly=System.Xml" xmlns:s3="clr-namespace:System;assembly=System.Core" xmlns:s4="clr-namespace:System;assembly=System.ServiceModel" xmlns:sa="clr-namespace:System.Activities;assembly=System.Activities" xmlns:sad="clr-namespace:System.Activities.Debugger;assembly=System.Activities" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System" xmlns:scg1="clr-namespace:System.Collections.Generic;assembly=System.ServiceModel" xmlns:scg2="clr-namespace:System.Collections.Generic;assembly=System.Core" xmlns:scg3="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:sl="clr-namespace:System.Linq;assembly=System.Core" xmlns:st="clr-namespace:System.Text;assembly=mscorlib" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <local:Workflow1.Implementation>
+    <Sequence>
+      <Sequence.Variables>
+        <Variable x:TypeArguments="scg3:List(local:Customer)" Name="Customers" />
+      </Sequence.Variables>
+      <mda:ExecuteSqlQuery x:TypeArguments="local:Customer" ProviderName="{x:Null}" CommandText="Select * from Customers where Country = @Country" ConnectionConfigurationName="WorkflowConsoleApplication7.Properties.Settings.NorthwindConnection" Result="[Customers]">
+        <mda:ExecuteSqlQuery.RecordProcessor>
+          <ActivityFunc x:TypeArguments="sd:IDataRecord, local:Customer">
+            <ActivityFunc.Argument>
+              <DelegateInArgument x:TypeArguments="sd:IDataRecord" Name="record" />
+            </ActivityFunc.Argument>
+            <ActivityFunc.Result>
+              <DelegateOutArgument x:TypeArguments="local:Customer" Name="target" />
+            </ActivityFunc.Result>
+            <Sequence DisplayName="Map Customer Fields">
+              <Assign>
+                <Assign.To>
+                  <OutArgument x:TypeArguments="local:Customer">[target]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="local:Customer">[New Customer]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <Assign>
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[target.CustomerId]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[record.GetString(0)]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <Assign>
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[target.CompanyName]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[record.GetString(1)]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <Assign>
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[target.ContactName]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[record.GetString(2)]</InArgument>
+                </Assign.Value>
+              </Assign>
+            </Sequence>
+          </ActivityFunc>
+        </mda:ExecuteSqlQuery.RecordProcessor>
+        <InArgument x:TypeArguments="x:String" x:Key="Country">UK</InArgument>
+      </mda:ExecuteSqlQuery>
+      <ForEach x:TypeArguments="local:Customer" DisplayName="ForEach&lt;Customer&gt;" Values="[Customers]">
+        <ActivityAction x:TypeArguments="local:Customer">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="local:Customer" Name="item" />
+          </ActivityAction.Argument>
+          <WriteLine Text="[item.CustomerId                                 &amp; &quot; &quot; &amp; item.CompanyName &amp; &quot;                                 &quot; &amp; item.ContactName]" />
+        </ActivityAction>
+      </ForEach>
+    </Sequence>
+  </local:Workflow1.Implementation>
+</local:Workflow1>

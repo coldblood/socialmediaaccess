@@ -1,0 +1,393 @@
+﻿<section class="sm-content">
+    @{
+        ViewBag.Title = "Home";
+        var Nick = Request.Params["Nick"];
+        var currentUser = Membership.GetUser(User.Identity.Name);
+        if (currentUser == null)
+        {
+            Response.Redirect("~/Account/Login");
+        }
+        var userName = currentUser.UserName;
+    }
+    @Html.Partial("MenuView", new ViewDataDictionary { { "userName", userName } })
+    <div id="body content-wrapper main-content clear-fix">
+        <script type="text/javascript">
+            function updateStatus(statusText) {
+                $('#statusText').attr('readonly', 'readonly');
+                $.ajax({
+                    type: "POST",
+                    url: "/Twitter/UpdateStatus",
+                    data: { statusText: $('#statusText').val(), nickName: '@Nick', user: '@userName'},
+                    success: function () {
+                        $('#statusText').removeAttr('readonly');
+                        $('#statusText').val("");
+                    }
+                });
+            }
+
+            function showComment(tweetId) {
+                var comment = document.getElementById(tweetId + "block");
+                $(comment).toggle();
+            }
+
+            function getBasicInfo(user, nick, screenName) {
+                $.ajax({
+                    type: "GET",
+                    url: "/Twitter/GetBasicInfo",
+                    data: { userName: '@userName', nick: '@Nick', screenName: screenName},
+                    success: function (data) {
+                        $('#BasicInfo').show();
+                        $('#BasicInfo').html("<h4>" + data.Name + "</h4><br /><p>" + data.Description + "</p><h6>" + data.Location + "</h6>");
+                    }
+                });
+            }
+
+            function getTweets(user, screenName, nick) {
+                $.ajax({
+                    type: "GET",
+                    url: "/Twitter/GetTweets",
+                    data: { userName: user, screenName: screenName, nick: nick },
+                    success: function (data) {
+                        LastProfileTweetId = (data[data.length - 1]).IdStr;
+                        $('#homepage').hide();
+                        $('#profilepage').show();
+                        $('#profilepage').html('');
+                        getBasicInfo(user, nick, screenName);
+                        $('#FollowDiv').show();
+                        data.forEach(function (item) {
+                            var substringedDate = item.CreatedDate.substring(6);
+                            var parsedIntDate = parseInt(substringedDate);
+                            var date = new Date(parsedIntDate);
+                            var tweetId = item.IdStr;
+                            $('#profilepage').append("<div class='sm-posts-cont'><div style='float:left;padding-right:1%'><img src='" + item.Author.ProfileImageUrl + "' /></div><div><h4 style='color: #2884C4'>" + item.Author.ScreenName + "</h4><h5>" + date + "</h5><p>" + item.Text + "</p><div class='sm-action-cont'><a href='#' onclick=\"retweet('" + tweetId + "');return false;\">" + item.RetweetCount + " Retweet</a><a href='#' onclick=\"showComment('" + tweetId + "');return false;\">Comment</a><a href='#' onclick=\"deleteTweet('" + tweetId + "');return false;\">Delete</a></div></div><div id=\"" + tweetId + "block\"><input type='text' id=\"" + tweetId + "reply\"/><button class='btn btn-xs btn-info' type='btn' onclick=\"reply('" + tweetId + "','" + item.Author.ScreenName + "')\">Reply</button></div></div>");
+                            $("#" + tweetId + "block").hide();
+                        });
+                    }
+                });
+            }
+
+            function getTweetsPrev(user, screenName, nick, id) {
+                $.ajax({
+                    type: "GET",
+                    url: "/Twitter/GetTweetsPrev",
+                    data: { userName: user, screenName: screenName, nick: nick, id: id },
+                    success: function (data) {
+                        LastProfileTweetId = (data[data.length - 1]).IdStr;
+                        data.forEach(function (item) {
+                            var substringedDate = item.CreatedDate.substring(6);
+                            var parsedIntDate = parseInt(substringedDate);
+                            var date = new Date(parsedIntDate);
+                            var tweetId = item.IdStr;
+                            $('#profilepage').append("<div class='sm-posts-cont'><div style='float:left;padding-right:1%'><img src='" + item.Author.ProfileImageUrl + "' /></div><div><h4 style='color: #2884C4'>" + item.Author.ScreenName + "</h4><h5>" + date + "</h5><p>" + item.Text + "</p><div class='sm-action-cont'><a href='#' onclick=\"retweet('" + tweetId + "');return false;\">" + item.RetweetCount + " Retweet</a><a href='#' onclick=\"showComment('" + tweetId + "');return false;\">Comment</a><a href='#' onclick=\"deleteTweet('" + tweetId + "');return false;\">Delete</a></div></div><div id=\"" + tweetId + "block\"><input type='text' id=\"" + tweetId + "reply\"/><button class='btn btn-xs btn-info' type='btn' onclick=\"reply('" + tweetId + "','" + item.Author.ScreenName + "')\">Reply</button></div></div>");
+                            $("#" + tweetId + "block").hide();
+                        });
+                    }
+                });
+            }
+
+            function getTweetsSince(user, screenName, nick, id) {
+                $.ajax({
+                    type: "GET",
+                    url: "/Twitter/GetTweetsSince",
+                    data: { userName: user, screenName: screenName, nick: nick, id: id },
+                    success: function (data) {
+                        data.forEach(function (item) {
+                            var substringedDate = item.CreatedDate.substring(6);
+                            var parsedIntDate = parseInt(substringedDate);
+                            var date = new Date(parsedIntDate);
+                            var tweetId = item.IdStr;
+                            $('#profilepage').append("<div class='sm-posts-cont'><div style='float:left;padding-right:1%'><img src='" + item.Author.ProfileImageUrl + "' /></div><div><h4 style='color: #2884C4'>" + item.Author.ScreenName + "</h4><h5>" + date + "</h5><p>" + item.Text + "</p><div class='sm-action-cont'><a href='#' onclick=\"retweet('" + tweetId + "');return false;\">" + item.RetweetCount + " Retweet</a><a href='#' onclick=\"showComment('" + tweetId + "');return false;\">Comment</a><a href='#' onclick=\"deleteTweet('" + tweetId + "');return false;\">Delete</a></div></div><div id=\"" + tweetId + "block\"><input type='text' id=\"" + tweetId + "reply\"/><button class='btn btn-xs btn-info' type='btn' onclick=\"reply('" + tweetId + "','" + item.Author.ScreenName + "')\">Reply</button></div></div>");
+                            $("#" + tweetId + "block").hide();
+                        });
+                    }
+                });
+            }
+
+
+            function reply(statusId, screenName) {
+                var replyId = document.getElementById(statusId + "reply");
+                var text = $(replyId).val();
+                $.ajax({
+                    type: "GET",
+                    url: "/Twitter/ReplyTweet",
+                    data: { statusId: statusId, user: '@userName', screenName: screenName, nick: '@Nick', text : text},
+                    success: function (data) {
+                        console.log(data);
+                    }
+                });
+            }
+
+            function updateTweetLoc(item) {
+                $('#tweetLoc').html('');
+                $('#tweetLoc').append("<div class='sm-posts-cont'><div style='float:left;padding-right:1%'><img src='" + item.Author.ProfileImageUrl + "' /></div><div><h4 style='color: #2884C4'>" + item.Author.ScreenName + "</h4><h5>" + date + "</h5><p>" + item.Text + "</p><div class='sm-action-cont'><a href='#' onclick=\"retweet('" + tweetId + "');return false;\">" + item.RetweetCount + " Retweet</a><a href='#' onclick=\"showComment('" + tweetId + "');return false;\">Comment</a><a href='#' onclick=\"deleteTweet('" + tweetId + "');return false;\">Delete</a></div></div><div id=\"" + tweetId + "block\"><input type='text' id=\"" + tweetId + "reply\"/><button class='btn btn-xs btn-info' type='btn' onclick=\"reply('" + tweetId + "','" + item.Author.ScreenName + "')\">Reply</button></div></div>");
+                $('#tweetLoc').show();
+            }
+
+            function getMentions(user, nick) {
+                $.ajax({
+                    type: "GET",
+                    url: "/Twitter/GetMentions",
+                    data: { userName: user, nick: nick },
+                    success: function (data) {
+                        data.forEach(function (item) {
+                            $('#mentionsList').append("<a class='list-group-item'>" + item.Text + "</li>");
+                        });
+                    }
+                });
+            }
+
+            function deleteTweet(id) {
+                $.ajax({
+                    type: "GET",
+                    url: "/Twitter/DeleteTweet",
+                    data: { id: id },
+                    success: function (data) {
+                        console.log(data);
+                    }
+                });
+            }
+
+            function follow() {
+                $.ajax({
+                    type: "GET",
+                    url: "/Twitter/Follow",
+                    data: { userName: '@userName', nick: '@Nick', screenName: $('#screenName').val() },
+                    success: function (data) {
+                        console.log(data);
+                    }
+                });
+            }
+
+            function unfollow() {
+                $.ajax({
+                    type: "GET",
+                    url: "/Twitter/UnFollow",
+                    data: { userName: '@userName', nick: '@Nick', screenName: $('#screenName').val() },
+                    success: function (data) {
+                        console.log(data);
+                    }
+                });
+            }
+
+            function search(user, searchTerm) {
+                $.ajax({
+                    type: "GET",
+                    url: "/Twitter/Search",
+                    data: { userName: user, term: searchTerm, Nick: '@Nick' },
+                    success: function (data) {
+                        $('#BasicInfo').hide();
+                        $('#FollowDiv').hide();
+                        $('#homepage').hide();
+                        $('#profilepage').html('');
+                        $('#profilepage').show();
+                        data.Statuses.forEach(function (item) {
+                            var substringedDate = item.CreatedDate.substring(6);
+                            var parsedIntDate = parseInt(substringedDate);
+                            var date = new Date(parsedIntDate);
+                            var tweetId = item.IdStr;
+                            $('#profilepage').append("<div class='sm-posts-cont'><div style='float:left;padding-right:1%'><img src='" + item.Author.ProfileImageUrl + "' /></div><div><h4 style='color: #2884C4'>" + item.Author.ScreenName + "</h4><h5>" + date + "</h5><p>" + item.Text + "</p><div class='sm-action-cont'><a href='#' onclick=\"retweet('" + tweetId + "');return false;\">" + item.RetweetCount + " Retweet</a><a href='#'>Comment</a><a href='#' onclick='deleteTweet(" + tweetId + ");return false;'>Delete</a></div></div></div>");
+                        });
+                        var searchTerm = searchTerm;
+                    }
+                });
+            }
+        </script>
+        <section class="sm-content">
+            @{
+                TweetSharp.TwitterUser userProfile = null;
+                var twitterSecret = new Social_media_access.Models.TwitterSecretData(userName, Nick);
+                var service = new TweetSharp.TwitterService(twitterSecret._OAuthConsumerKey, twitterSecret._OAuthConsumerSecret);
+                service.AuthenticateWith(twitterSecret._OAuthAccessToken, twitterSecret._OAuthAccessTokenSecret);
+                var _ListTweetsOnHomeTimelineOptions = new TweetSharp.ListTweetsOnHomeTimelineOptions();
+                _ListTweetsOnHomeTimelineOptions.Count = 10;
+                var tweets = service.ListTweetsOnHomeTimeline(_ListTweetsOnHomeTimelineOptions);
+                userProfile = service.GetUserProfile(new TweetSharp.GetUserProfileOptions());
+                long LastTweetId = tweets.Last().Id;
+                long FirstTweetId = tweets.First().Id;
+            }
+            <script type="text/javascript">
+                var LastTweetId = '@LastTweetId';
+                var FirstTweetId = '@FirstTweetId';
+                function getHomeTweets(user, nick) {
+                    $.ajax({
+                        type: "GET",
+                        url: "/Twitter/GetHomeTweets",
+                        data: { userName: user, Nick: nick },
+                        success: function (data) {
+                            $('#profilepage').hide();
+                            $('#HomeTweets').html('');
+                            $('#homepage').show();
+                            data.forEach(function (item) {
+                                var substringedDate = item.CreatedDate.substring(6);
+                                var parsedIntDate = parseInt(substringedDate);
+                                var date = new Date(parsedIntDate);
+                                var tweetId = item.IdStr;
+                                $('#HomeTweets').append("<div class='sm-posts-cont'><div style='float:left;padding-right:1%'><img src='" + item.Author.ProfileImageUrl + "' /></div><div><h4 style='color: #2884C4'>" + item.Author.ScreenName + "</h4><h5>" + date + "</h5><p>" + item.Text + "</p><div class='sm-action-cont'><a href='#' onclick=\"retweet('" + tweetId + "');return false;\">" + item.RetweetCount + " Retweet</a><a href='#' onclick=\"showComment('"+tweetId+"');return false;\">Comment</a><a href='#' onclick=\"deleteTweet('" + tweetId + "');return false;\">Delete</a></div></div><div id=\"" + tweetId + "block\"><input type='text' id=\"" + tweetId + "reply\"/><button class='btn btn-xs btn-info' type='btn' onclick=\"reply('" + tweetId + "','" + item.Author.ScreenName + "')\">Reply</button></div></div>");
+                                $("#"+ tweetId+"block").hide();
+                            });
+                        }
+                    });
+                }
+
+                function getHomeTweetsSince(user, nick, id) {
+                    $.ajax({
+                        type: "GET",
+                        url: "/Twitter/GetHomeTweetsSince",
+                        data: { userName: user, Nick: nick, id: id },
+                        success: function (data) {
+                            FirstTweetId = data[0].IdStr;
+                            data.forEach(function (item) {
+                                var substringedDate = item.CreatedDate.substring(6);
+                                var parsedIntDate = parseInt(substringedDate);
+                                var date = new Date(parsedIntDate);
+                                var tweetId = item.IdStr;
+                                $('#HomeTweets').preprend("<div class='sm-posts-cont'><div style='float:left;padding-right:1%'><img src='" + item.Author.ProfileImageUrl + "' /></div><div><h4 style='color: #2884C4'>" + item.Author.ScreenName + "</h4><h5>" + date + "</h5><p>" + item.Text + "</p><div class='sm-action-cont'><a href='#' onclick=\"retweet('" + tweetId + "');return false;\">" + item.RetweetCount + " Retweet</a><a href='#' onclick=\"showComment('" + tweetId + "');return false;\">Comment</a><a href='#' onclick=\"deleteTweet('" + tweetId + "');return false;\">Delete</a></div></div><div id=\"" + tweetId + "block\"><input type='text' id=\"" + tweetId + "reply\"/><button class='btn btn-xs btn-info' type='btn' onclick=\"reply('" + tweetId + "','" + item.Author.ScreenName + "')\">Reply</button></div></div>");
+                                $("#" + tweetId + "block").hide();
+                            });
+                        }
+                    });
+                }
+
+                function getHomeTweetsPrev(user, nick, id) {
+                    $.ajax({
+                        type: "GET",
+                        url: "/Twitter/GetHomeTweetsPrev",
+                        data: { userName: user, Nick: nick, id: id },
+                        success: function (data) {
+                            LastTweetId = (data[data.length - 1]).IdStr;
+                            data.forEach(function (item) {
+                                var substringedDate = item.CreatedDate.substring(6);
+                                var parsedIntDate = parseInt(substringedDate);
+                                var date = new Date(parsedIntDate);
+                                var tweetId = item.Id;
+                                $('#HomeTweets').append("<div class='sm-posts-cont'><div style='float:left;padding-right:1%'><img src='" + item.Author.ProfileImageUrl + "' /></div><div><h4 style='color: #2884C4'>" + item.Author.ScreenName + "</h4><h5>" + date + "</h5><p>" + item.Text + "</p><div class='sm-action-cont'><a href='#' onclick=\"retweet('" + tweetId + "');return false;\">" + item.RetweetCount + " Retweet</a><a href='#' onclick=\"showComment('" + tweetId + "');return false;\">Comment</a><a href='#' onclick=\"deleteTweet('" + tweetId + "');return false;\">Delete</a></div></div><div id=\"" + tweetId + "block\"><input type='text' id=\"" + tweetId + "reply\"/><button class='btn btn-xs btn-info' type='btn' onclick=\"reply('" + tweetId + "','" + item.Author.ScreenName + "')\">Reply</button></div></div>");
+                                $("#" + tweetId + "block").hide();
+                            });
+                        }
+                    });
+                }
+
+                function retweet(id) {
+                    $.ajax({
+                        type: "GET",
+                        url: "/Twitter/Retweet",
+                        data: { userName: '@userName', Nick: '@Nick', id: id },
+                        success: function (data) {
+                            console.log(data);
+                        }
+                    });
+                }
+
+                function deleteTweet(id) {
+                    $.ajax({
+                        type: "GET",
+                        url: "/Twitter/Delete",
+                        data: { userName: '@userName', Nick: '@Nick', id: id },
+                        success: function (data) {
+                            console.log(data);
+                        }
+                    });
+                }
+
+            </script>
+            <div class="sm-col w70" id="profilebgimg">
+                
+            </div>
+            <div class="sm-col w70">
+                <div id="profilepage"></div>
+                <button id="MoreProfileTweets" class="btn btn-info col-centered" style="margin-left:30%">More ... </button>
+            </div>
+            <div class="sm-col w70" id="tweetLoc">
+                
+            </div>
+            <div class="sm-col w70" id="homepage">
+                <div class="sm-user-info">
+                    <h4>@userProfile.Name</h4>
+                </div>
+                <div class="sm-create-post-cont">
+                    <label> Compose your post </label>
+                    <textarea id="statusText"></textarea>
+                    <button class="sm-btn" onclick="updateStatus($('#statusText').val(),'@userName','@Nick')">Post</button>
+                </div>
+                <div class="sm-user-info">
+                    <h4>Posts and Feeds</h4>
+                </div>
+                <div id="HomeTweets">
+
+                </div>
+                <button id="MoreTweets" class="btn btn-info col-centered" style="margin-left:30%">More ... </button>
+            </div>
+            <div class="sm-col w25">
+
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="active"><a href="#profile" role="tab" data-toggle="tab">Profile</a></li>
+                    <li><a href="#content" role="tab" data-toggle="tab">Content</a></li>
+                    <li><a href="#mentions" role="tab" data-toggle="tab">Mentions</a></li>
+                </ul>
+
+                <div class="tab-content">
+                    <div class="tab-pane active" id="profile">
+                        <div class="sm-search-cont sm-pull-right-20 sm-pull-down-45">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Screen Name" id="screenName">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" id="screenBtn" type="button">View</button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="content">
+                        <div class="sm-search-cont sm-pull-right-20 sm-pull-down-45">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Search people, page, group" id="searchTerm">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" id="searchBtn" type="button">Search</button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="mentions">
+                        <div class="list-group" id="mentionsList">
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="sm-search-cont sm-pull-right-20 sm-pull-down-45" id="BasicInfo">
+                    
+                </div>
+
+                <div class="sm-search-cont sm-pull-right-20 sm-pull-down-45" id="FollowDiv">
+                    <button id="follow" class="btn btn-xs btn-success" onclick="follow(); return false;">Follow</button>
+                    <button id="unfollow" class="btn btn-xs btn-danger" onclick="unfollow(); return false;">Unfollow</button>
+                </div>
+
+            </div>
+        </section>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $("#MoreProfileTweets").hide();
+                $('#tweetLoc').hide();
+                $("#searchBtn").click(function () {
+                    search('@userName', $('#searchTerm').val());
+                });
+                $("#screenBtn").click(function () {
+                    getTweets('@userName', $('#screenName').val(), '@Nick');
+                    $("#MoreProfileTweets").show();
+                });
+                getMentions('@userName', '@Nick');
+                getHomeTweets('@userName', '@Nick');
+                $('#FollowDiv').hide();
+                $("#MoreTweets").click(function () {
+                    getHomeTweetsPrev('@userName', '@Nick', LastTweetId);
+                });
+                $("#MoreProfileTweets").click(function () {
+                    getTweetsPrev('@userName',$('#screenName').val(), '@Nick', LastProfileTweetId);
+                });
+                $("#RefreshTweets").click(function () {
+                    getHomeTweetsSince('@userName', '@Nick', FirstTweetId);
+                });
+            });
+        </script>
+    </div>
+</section>

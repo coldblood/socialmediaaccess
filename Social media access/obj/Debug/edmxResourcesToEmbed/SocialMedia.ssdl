@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SocialMediaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Tweets">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Author" Type="nvarchar" MaxLength="50" />
+    <Property Name="Text" Type="nvarchar(max)" />
+    <Property Name="Status" Type="nvarchar" MaxLength="50" />
+    <Property Name="TimeStamp" Type="datetime" />
+  </EntityType>
+  <EntityType Name="TwitterSecrets">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AccessToken" Type="nvarchar(max)" />
+    <Property Name="AccessTokenSecret" Type="nvarchar(max)" />
+    <Property Name="ConsumerKey" Type="nvarchar(max)" />
+    <Property Name="ConsumerSecret" Type="nvarchar(max)" />
+    <Property Name="UserId" Type="nvarchar(max)" />
+    <Property Name="Nick" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityContainer Name="SocialMediaModelStoreContainer">
+    <EntitySet Name="Tweets" EntityType="Self.Tweets" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TwitterSecrets" EntityType="Self.TwitterSecrets" Schema="dbo" store:Type="Tables" />
+  </EntityContainer>
+</Schema>

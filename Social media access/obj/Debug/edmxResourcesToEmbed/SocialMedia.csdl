@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SocialMediaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Tweet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Author" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TimeStamp" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityContainer Name="SocialMediaEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Tweets" EntityType="Self.Tweet" />
+    <EntitySet Name="TwitterSecrets" EntityType="SocialMediaModel.TwitterSecret" />
+  </EntityContainer>
+  <EntityType Name="TwitterSecret">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="AccessToken" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="AccessTokenSecret" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="ConsumerKey" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="ConsumerSecret" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="UserId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Nick" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+</Schema>

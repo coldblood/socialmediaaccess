@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title - Social media </title>
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width" />
+    <script type="text/javascript" src="Scripts/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="Scripts/bootstrap.js"></script>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <div id="body content-wrapper main-content clear-fix">
+        @model Social_media_access.Models.LoginModel
+
+        @{
+            ViewBag.Title = "Log in";
+            Layout = null;
+        }
+
+        <section id="loginForm" class="sm-content">
+            <h2>log in</h2>
+            @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                <table>
+                    <tr>
+                        <td>@Html.LabelFor(m => m.UserName)</td>
+                        <td>
+                            @Html.TextBoxFor(m => m.UserName)
+                            @Html.ValidationMessageFor(m => m.UserName)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(m => m.Password)</td>
+                        <td>
+                            @Html.PasswordFor(m => m.Password)
+                            @Html.ValidationMessageFor(m => m.Password)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            @Html.CheckBoxFor(m => m.RememberMe)
+                            @Html.LabelFor(m => m.RememberMe, new { @class = "checkbox" })
+                        </td>
+                    </tr>
+                </table>
+                <input type="submit" value="Log in" />
+                <p>
+                    @Html.ActionLink("Register", "Register") if you don't have an account.
+                </p>
+            }
+        </section>
+
+        @section Scripts {
+            @Scripts.Render("~/bundles/jqueryval")
+        }
+
+
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+</body>
+</html>
