@@ -1,0 +1,1 @@
+var smApp = angular.module('smApp', []);

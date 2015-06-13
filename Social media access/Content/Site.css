@@ -1,13 +1,22 @@
 ﻿body{
-	font-family: Arial;
-	margin: 0;
 	background-color: #e6e6e6;
-	font-size: 12px;
-	width: 1140px;
-	margin: 0 auto;
 	
 }
-l,h1,h3,h4{
+.header{
+	background-color: #000;
+	color: #fff;
+	text-align: left;
+	padding: 15px 20px;
+    margin-bottom: 40px;
+    border-radius: 0 0 5px 5px;
+}
+.header h1{    
+    font-size: 30px;
+}
+.header .user{ 
+	text-align: right;
+}
+ul,h1,h3,h4{
 	padding: 0; 
 	margin: 0;
 }
@@ -17,7 +26,7 @@ ul li{
 
 ul li h3{
 	background-color: #F8F7F7;
-	font-size: 12px;
+	font-size: 14px;
 	padding: 5px;
 	margin-bottom: 10px;
 }
@@ -62,7 +71,7 @@ a {
 	width: 160px;
 	height: 160px;
 	display: inline-block;
-	border-radius: 10px;
+	border-radius: 50%;
 	margin: 10px 10px 10px 10px;
 }
 .sm-fb {
@@ -75,7 +84,7 @@ a {
 	background: url('images/linkedin.png') no-repeat;
 }
 .sm-sub-container {	
-    padding: 10%;
+    padding: 4% 0 0 15%;
     text-align: center;
 }
 .sm-sub-container > div{
@@ -99,9 +108,11 @@ a {
 }
 .sm-create-post-cont{
 	padding: 10px;
+	border: 1px solid #fff;
 	margin-bottom: 20px;
 }
 .sm-create-post-cont label{
+	display: block;
 	margin-bottom: 10px;
 }
 .sm-create-post-cont textarea{
@@ -136,7 +147,7 @@ a {
 	width: 20px;
 	height: 20px;
 	display: inline-block;
-	background: url('Images/search.png') #fff no-repeat;
+	background: url('images/search.png') #fff no-repeat;
 	position: absolute;
 	top: 18px;
 	right: -22px;
@@ -172,33 +183,11 @@ a {
 	padding: 10px;
 	color: #666;
 }
-.sm-tabs .sm-tab{
-	background-color: #888888;
-	color: #FFF;
-	padding: 10px;	
-	cursor: pointer;
-	margin: 0;
-	border-bottom: 1px solid #fff;
-}
-.sm-tabs .sm-tab.active{
-	font-weight: bold;
-	background-color: #6E6C6A;
-}
 
-.sm-tabs .sm-tab:hover{
-	background-color: #6E6C6A;
-	color: #fff;
-}
 .sm-nav{
 	float: left;
 }
-.sm-tab-content{
-	float:left;
-	padding: 0 10px;
-	border-top: 1px solid #d6d6d6;
-	min-height: 300px;
-	position: relative;
-}
+
 /*TBD*/
 
 .sub-content{
@@ -216,14 +205,27 @@ a {
 	display: block;
 	padding: 3px;
 }
-.sm-tab-content .sm-posts-cont{
-	margin: 0;
-	border-bottom: 1px solid #d6d6d6;
+.sm-tabs ul {
+    margin-bottom: 20px;
+    border: none;
 }
-.sm-tab-content .sm-btn{
-	font-size: 11px;
+.sm-tabs .nav-tabs li a,
+.sm-tabs .nav-tabs li a:hover,
+.sm-tabs .nav-tabs li a:focus {
+    background: none;
+    border: none;
+    padding: 0 20px 10px 20px;
 }
-.col-centered{
-    float: none;
-    margin: 0 auto;
+.sm-tabs .nav-tabs li.active a {
+    border-bottom: 5px solid;
+}
+.margin-tp-20 {
+    margin-top: 20px;
+}
+.align-right {
+    text-align: right;
+}
+.error{
+    color: #A94442;
+    font-size: 11px;
 }

@@ -1,68 +1,138 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="smApp">
 <head>
     <meta charset="utf-8" />
     <title>@ViewBag.Title - Social media </title>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
     <link href="~/Content/Site.css" rel="stylesheet" />
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <meta name="viewport" content="width=device-width" />
     <script type="text/javascript" src="Scripts/jquery-1.9.1.js"></script>
+    <script src="~/Scripts/lib/angular.js"></script>
     <script type="text/javascript" src="Scripts/bootstrap.js"></script>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+    <script src="~/Scripts/common/smModule.js"></script>
+    <script src="~/Scripts/controllers/smLoginCtrl.js"></script>
 </head>
-<body>
-    <div id="body content-wrapper main-content clear-fix">
+<body class="container" ng-controller="smLoginCtrl">
+    <header class="header">
+        <h1>msSocial</h1>
+    </header>
+    <div class="container">
         @model Social_media_access.Models.LoginModel
 
         @{
             ViewBag.Title = "Log in";
             Layout = null;
         }
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div role="tabpanel" class="sm-tabs">
 
-        <section id="loginForm" class="sm-content">
-            <h2>log in</h2>
-            @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl }))
-            {
-                @Html.AntiForgeryToken()
-                @Html.ValidationSummary(true)
-                <table>
-                    <tr>
-                        <td>@Html.LabelFor(m => m.UserName)</td>
-                        <td>
-                            @Html.TextBoxFor(m => m.UserName)
-                            @Html.ValidationMessageFor(m => m.UserName)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(m => m.Password)</td>
-                        <td>
-                            @Html.PasswordFor(m => m.Password)
-                            @Html.ValidationMessageFor(m => m.Password)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>
-                            @Html.CheckBoxFor(m => m.RememberMe)
-                            @Html.LabelFor(m => m.RememberMe, new { @class = "checkbox" })
-                        </td>
-                    </tr>
-                </table>
-                <input type="submit" value="Log in" />
-                <p>
-                    @Html.ActionLink("Register", "Register") if you don't have an account.
-                </p>
-            }
-        </section>
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#login" aria-controls="login" role="tab" data-toggle="tab">Login</a></li>
+                            <li role="presentation"><a href="#signup" aria-controls="signup" role="tab" data-toggle="tab">Sign Up</a></li>
+                        </ul>
 
-        @section Scripts {
-            @Scripts.Render("~/bundles/jqueryval")
-        }
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane fade in active" id="login">
+                                <form name="loginForm" novalidate>
+                                    <div class="form-group">
+                                        <label>User Name</label>
+                                        <input type="text" name="userName" ng-model="login.userName" class="form-control" placeholder="Enter User Name" required/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Password</label>
+                                        <input type="password" name="password" ng-model="login.password" class="form-control" placeholder="Enter Password" required/>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="rememberMe" ng-model="login.rememberMe"> Remember Me
+                                        </label>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary" ng-disabled="loginForm.$invalid">Login</button>
+                                </form>
+                            </div>
+                            <div role="tabpanel" class="tab-pane fade" id="signup">
+                                <form name="signUpForm" novalidate>
+                                    <div class="form-group">
+                                        <label>User Name</label>
+                                        <input type="text" name="userName" ng-model="signUp.userName"  class="form-control" placeholder="Enter User Name" required/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Password</label>
+                                        <input type="password" name="password" ng-model="signUp.password" class="form-control" placeholder="Enter Password" required ng-minlength="6" />
+                                        <div class="error" ng-show="signUpForm.password.$error.minlength">Password must be minimum 6 character long</div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Confirm Password</label>
+                                        <input type="password" name="confPassword" ng-model="signUp.confPassword" class="form-control" placeholder="Enter Password" required ng-minlength="6" />
+                                        <div class="error" ng-show="signUpForm.confPassword.$error.minlength" >Password must be minimum 6 character long</div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary" ng-disabled="signUpForm.$invalid">Sign Up</button>
+                                </form>
+                            </div>
+                        </div>
 
+                    </div>
+                </div>
+                <div class="col-lg-8 col-lg-offset-1 align-right">
+                    <h3>We enable you to connect social media in  <span class="label label-success">Morganized Way</span></h3>
+                    <div class="sm-sub-container">
+                        <div>
+                            <span class="sm-icon sm-fb"></span>
+                        </div>
+                        <div>
+                            <span class="sm-icon sm-twitter"></span>
+                        </div>
+                        <div>
+                            <span class="sm-icon sm-linkedin"></span>
+                        </div>
+                    </div>
+                </div>
 
+            </div>
+        </div>
     </div>
+    <section id="loginForm" class="w25">
 
-    @Scripts.Render("~/bundles/jquery")
+        @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+
+            <table>
+                <tr>
+                    <td></td>
+                    <td>
+                        @Html.TextBoxFor(m => m.UserName)
+                        @Html.ValidationMessageFor(m => m.UserName)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(m => m.Password)</td>
+                    <td>
+                        @Html.PasswordFor(m => m.Password)
+                        @Html.ValidationMessageFor(m => m.Password)
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        @Html.CheckBoxFor(m => m.RememberMe)
+                        @Html.LabelFor(m => m.RememberMe, new { @class = "checkbox" })
+                    </td>
+                </tr>
+            </table>
+            <input type="submit" value="Log in" />
+            <p>
+                @Html.ActionLink("Register", "Register") if you don't have an account.
+            </p>
+        }
+    </section>
+   
 </body>
 </html>
+
