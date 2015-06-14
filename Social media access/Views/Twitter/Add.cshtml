@@ -8,67 +8,129 @@
     var userName = currentUser.UserName;
     TweetSharp.TwitterUser userProfile = null;
 }
-<section class="sm-content">
-    <script type="text/javascript">
-        function addTwitterAccount() {
-            var accessToken = $('#accessToken').val();
-            var accessTokenSecret = $('#accessTokenSecret').val();
-            var consumerKey = $('#consumerKey').val();
-            var consumerKeySecret = $('#consumerKeySecret').val();
-            var userName = $('#userName').val();
-            var nick = $('#nick').val();
-            $.ajax({
-                type: "POST",
-                url: "/Twitter/AddAccount",
-                data: { accessToken: accessToken, accessTokenSecret: accessTokenSecret, consumerKey: consumerKey, consumerKeySecret: consumerKeySecret, userName: userName, nick: nick },
-                success: function (response) {
-                    console.log(response);
-                }
-            });
-        }
-    </script>
-    <table>
-        <tr>
-            <td>Access Token</td>
-            <td>
-                <input type="text" id="accessToken" />
-            </td>
-        </tr>
-        <tr>
-            <td>Access Token Secret</td>
-            <td>
-                <input type="text" id="accessTokenSecret" />
-            </td>
-        </tr>
-        <tr>
-            <td>Consumer Key</td>
-            <td>
-                <input type="text" id="consumerKey" />
-            </td>
-        </tr>
-        <tr>
-            <td>Consumer Key Secret</td>
-            <td>
-                <input type="text" id="consumerKeySecret" />
-            </td>
-        </tr>
-        <tr>
-            <td>User Name</td>
-            <td>
-                <input type="text" id="userName" />
-            </td>
-        </tr>
-        <tr>
-            <td>Nick</td>
-            <td>
-                <input type="text" id="nick" />
-            </td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>
-                <button id="addTwitterAccount" onclick="addTwitterAccount(); return false;">Add</button>
-            </td>
-        </tr>
-    </table>
-</section>
+<div class="container" ng-controller="smAddApplicationCtrl">
+    <header class="header">
+        <h1>
+            msSocial
+            <div class="btn-group pull-right">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    Simbu <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">Change Password</a></li>
+                    <li><a href="#">Logout</a></li>
+                </ul>
+            </div>
+        </h1>
+    </header>
+    <section>
+
+        <script type="text/javascript">
+            function addTwitterAccount() {
+                var accessToken = $('#accessToken').val();
+                var accessTokenSecret = $('#accessTokenSecret').val();
+                var consumerKey = $('#consumerKey').val();
+                var consumerKeySecret = $('#consumerKeySecret').val();
+                var userName = $('#userName').val();
+                var nick = $('#nick').val();
+                $.ajax({
+                    type: "POST",
+                    url: "/Twitter/AddAccount",
+                    data: { accessToken: accessToken, accessTokenSecret: accessTokenSecret, consumerKey: consumerKey, consumerKeySecret: consumerKeySecret, userName: userName, nick: nick },
+                    success: function (response) {
+                        console.log(response);
+                    }
+                });
+            }
+        </script>
+        <form name="addAppInfoForm" novalidate>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12 sm-sub-header">
+                        <h3>Add your twitter account information</h3>
+                        <hr />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label>Access Token</label>
+                            <input type="text" name="accessToken" ng-model="addApp.accessToken" class="form-control" placeholder="Enter Access Token" required />
+                        </div>
+                        <div class="form-group">
+                            <label>Consumer Key</label>
+                            <input type="text" name="consumerKey" ng-model="addApp.consumerKey" class="form-control" placeholder="Enter Consumer Key" required />
+                        </div>
+                        <div class="form-group">
+                            <label>User Name</label>
+                            <input type="text" name="userName" ng-model="addApp.userName" class="form-control" placeholder="Enter User Name" required />
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label>Access Token Secret</label>
+                            <input type="text" name="accessTokenSecret" ng-model="addApp.accessTokenSecret" class="form-control" placeholder="Enter Access Token Secret" required />
+                        </div>
+                        <div class="form-group">
+                            <label>Consumer Key Secret</label>
+                            <input type="text" name="consumerKeySecret" ng-model="addApp.consumerKeySecret" class="form-control" placeholder="Enter Consumer Key Secret" required />
+                        </div>
+                        <div class="form-group">
+                            <label>Nick Name</label>
+                            <input type="text" name="nickName" ng-model="addApp.nickName" class="form-control" placeholder="Enter Nick Name" required />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3">
+                        <button type="submit" class="btn btn-primary" ng-disabled="addAppInfoForm.$invalid">Add</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <table>
+            <tr>
+                <td>Access Token</td>
+                <td>
+                    <input type="text" id="accessToken" />
+                </td>
+            </tr>
+            <tr>
+                <td>Access Token Secret</td>
+                <td>
+                    <input type="text" id="accessTokenSecret" />
+                </td>
+            </tr>
+            <tr>
+                <td>Consumer Key</td>
+                <td>
+                    <input type="text" id="consumerKey" />
+                </td>
+            </tr>
+            <tr>
+                <td>Consumer Key Secret</td>
+                <td>
+                    <input type="text" id="consumerKeySecret" />
+                </td>
+            </tr>
+            <tr>
+                <td>User Name</td>
+                <td>
+                    <input type="text" id="userName" />
+                </td>
+            </tr>
+            <tr>
+                <td>Nick</td>
+                <td>
+                    <input type="text" id="nick" />
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <button id="addTwitterAccount" onclick="addTwitterAccount(); return false;">Add</button>
+                </td>
+            </tr>
+        </table>
+    </section>
+</div>

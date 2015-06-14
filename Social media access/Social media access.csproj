@@ -338,6 +338,7 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\common\smModule.js" />
+    <Content Include="Scripts\controllers\smAddAppCtrl.js" />
     <Content Include="Scripts\controllers\smLoginCtrl.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
     <Content Include="Scripts\jquery-1.9.1.min.js" />

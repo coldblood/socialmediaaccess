@@ -14,7 +14,8 @@
     font-size: 30px;
 }
 .header .user{ 
-	text-align: right;
+	font-size: 14px;
+    font-weight: normal;
 }
 ul,h1,h3,h4{
 	padding: 0; 
@@ -205,6 +206,11 @@ a {
 	display: block;
 	padding: 3px;
 }
+.sm-tabs.sm-tabs-highlighter{
+    padding: 10px;
+    background-color: #E2E2E2;
+    border-radius: 10px;
+}
 .sm-tabs ul {
     margin-bottom: 20px;
     border: none;
@@ -228,4 +234,7 @@ a {
 .error{
     color: #A94442;
     font-size: 11px;
+}
+.sm-sub-header{
+    color: #286090;
 }

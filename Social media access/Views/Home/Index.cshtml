@@ -17,35 +17,102 @@
     }
     catch (Exception ex) { }
 }
-<section class="sm-content">
-    <div class="modal fade" id="twitterModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Select an action</h4>
-                </div>
-                <div class="modal-body">
-                    <a href="/Twitter/Add">Add</a> a twitter account: <br />
-                    Go to @Html.DropDownList("Nick", twitterSecretsMap) <button id="ProfileBtn">Go</button>
+<div class="container">
+    <header class="header">
+        <h1>msSocial 
+            <div class="btn-group pull-right">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    Simbu <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="#" data-toggle="modal" data-target="#changePassword">Change Password</a></li>
+                    <li><a href="#">Logout</a></li>
+                </ul>
+            </div>
+        </h1>
+    </header>
+    <section class="">
+        <div class="row">
+            <div class="col-lg-12 sm-sub-header">
+                <h3>Connect to any social media</h3>
+                <hr />
+            </div>
+        </div>
+        <div class="modal fade" id="twitterModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Select an action</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                        <div class="form-group">                                            
+                                            <select class="form-control" placeholder="Select Account">
+                                                <option>Account 1</option>
+                                                <option>Account 2</option>
+                                            </select>                                           
+                                        </div>
+                                        <a href="/Twitter/Add">Add a twitter account</a>                                    
+                                    <!--Go to @Html.DropDownList("Nick", twitterSecretsMap) <button id="ProfileBtn">Go</button>-->
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+               </div>
+             </div>
+        </div>
+        <div class="sm-sub-container">
+            <div>
+                <a href="#" class="sm-icon sm-fb"></a>
+            </div>
+            <div>
+                <a href="#" class="sm-icon sm-twitter" data-toggle="modal" data-target="#twitterModal"></a>
+            </div>
+            <div>
+                <a href="#" class="sm-icon sm-linkedin"></a>
+            </div>
+        </div>
+        <script type="text/javascript">
+            $("#ProfileBtn").click(function () {
+                window.location.replace("/Home/Profile?Nick=" + $("#Nick").val());
+            });
+        </script>
+
+        <div class="modal fade" id="changePassword" tabindex="-1" role="dialog" aria-labelledby="changePassword" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="changePassword">Change Password</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <form name="changePasswordForm" novalidate>
+                                        <div class="form-group">
+                                            <label>Current Password</label>
+                                            <input type="text" name="currentPassword" ng-model="changePassword.currentPw" class="form-control" placeholder="Enter Current Password" required />
+                                        </div>
+                                        <div class="form-group">
+                                            <label>New Password</label>
+                                            <input type="text" name="newPw" ng-model="changePassword.newPw" class="form-control" placeholder="Enter New Password" required />
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Confirm New Password</label>
+                                            <input type="text" name="confNewPw" ng-model="changePassword.confNewPw" class="form-control" placeholder="Enter New Password" required />
+                                        </div>
+                                        <button type="submit" class="btn btn-primary" ng-disabled="changePasswordForm.$invalid">Update</button>
+                                     </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="sm-sub-container">
-        <div>
-            <a href="#" class="sm-icon sm-fb"></a>
-        </div>
-        <div>
-            <a href="#" class="sm-icon sm-twitter" data-toggle="modal" data-target="#twitterModal"></a>
-        </div>
-        <div>
-            <a href="#" class="sm-icon sm-linkedin"></a>
-        </div>
-    </div>
-    <script type="text/javascript">
-        $("#ProfileBtn").click(function () {
-            window.location.replace("/Home/Profile?Nick="+$("#Nick").val());
-        });
-    </script>
-</section>
+    </section>
+</div>
