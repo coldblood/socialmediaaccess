@@ -184,6 +184,12 @@ a {
 	padding: 10px;
 	color: #666;
 }
+.sm-posts-cont p{
+    font-size: 12px;
+}
+.sm-posts-cont h5{
+    margin-top: 2px;
+}
 
 .sm-nav{
 	float: left;

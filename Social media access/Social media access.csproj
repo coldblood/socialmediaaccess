@@ -340,6 +340,8 @@
     <Content Include="Scripts\common\smModule.js" />
     <Content Include="Scripts\controllers\smAddAppCtrl.js" />
     <Content Include="Scripts\controllers\smLoginCtrl.js" />
+    <Content Include="Scripts\controllers\smProfileCtrl.js" />
+    <Content Include="Scripts\filters\smFilters.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
     <Content Include="Scripts\jquery-1.9.1.min.js" />
     <Content Include="Scripts\jquery-1.9.1.min.map" />
@@ -358,6 +360,7 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\npm.js" />
     <Content Include="Scripts\services\smLoginService.js" />
+    <Content Include="Scripts\services\smProfileService.js" />
     <Content Include="SocialMedia.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>SocialMedia.edmx</DependentUpon>

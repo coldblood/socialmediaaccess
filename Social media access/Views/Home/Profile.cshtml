@@ -1,4 +1,4 @@
-﻿<section class="sm-content">
+﻿<section class="container">
     @{
         ViewBag.Title = "Home";
         var Nick = Request.Params["Nick"];
@@ -9,8 +9,32 @@
         }
         var userName = currentUser.UserName;
     }
-    @Html.Partial("MenuView", new ViewDataDictionary { { "userName", userName } })
-    <div id="body content-wrapper main-content clear-fix">
+    <header class="header">
+        <h1>
+            msSocial
+            <div class="btn-group pull-right">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    @userName <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="#" data-toggle="modal" data-target="#changePassword">Change Password</a></li>
+                    <li><a href="#">Logout</a></li>
+                </ul>
+            </div>
+        </h1>
+    </header>
+    <div>
+        <div class="row">
+            <div class="col-lg-12 sm-sub-header">
+                <h3>@Nick</h3>
+                <hr />
+            </div>
+        </div>
+        <!-- Temporary -->
+        <script>
+            var userInfo = { userName: '@userName', Nick: '@Nick' };
+        </script>
+        <!-- Temporary END-->
         <script type="text/javascript">
             function updateStatus(statusText) {
                 $('#statusText').attr('readonly', 'readonly');
@@ -192,7 +216,7 @@
                 });
             }
         </script>
-        <section class="sm-content">
+        <section ng-controller="smProfileCtrl">
             @{
                 TweetSharp.TwitterUser userProfile = null;
                 var twitterSecret = new Social_media_access.Models.TwitterSecretData(userName, Nick);
@@ -222,8 +246,8 @@
                                 var parsedIntDate = parseInt(substringedDate);
                                 var date = new Date(parsedIntDate);
                                 var tweetId = item.IdStr;
-                                $('#HomeTweets').append("<div class='sm-posts-cont'><div style='float:left;padding-right:1%'><img src='" + item.Author.ProfileImageUrl + "' /></div><div><h4 style='color: #2884C4'>" + item.Author.ScreenName + "</h4><h5>" + date + "</h5><p>" + item.Text + "</p><div class='sm-action-cont'><a href='#' onclick=\"retweet('" + tweetId + "');return false;\">" + item.RetweetCount + " Retweet</a><a href='#' onclick=\"showComment('"+tweetId+"');return false;\">Comment</a><a href='#' onclick=\"deleteTweet('" + tweetId + "');return false;\">Delete</a></div></div><div id=\"" + tweetId + "block\"><input type='text' id=\"" + tweetId + "reply\"/><button class='btn btn-xs btn-info' type='btn' onclick=\"reply('" + tweetId + "','" + item.Author.ScreenName + "')\">Reply</button></div></div>");
-                                $("#"+ tweetId+"block").hide();
+                                $('#HomeTweets').append("<div class='sm-posts-cont'><div style='float:left;padding-right:1%'><img src='" + item.Author.ProfileImageUrl + "' /></div><div><h4 style='color: #2884C4'>" + item.Author.ScreenName + "</h4><h5>" + date + "</h5><p>" + item.Text + "</p><div class='sm-action-cont'><a href='#' onclick=\"retweet('" + tweetId + "');return false;\">" + item.RetweetCount + " Retweet</a><a href='#' onclick=\"showComment('" + tweetId + "');return false;\">Comment</a><a href='#' onclick=\"deleteTweet('" + tweetId + "');return false;\">Delete</a></div></div><div id=\"" + tweetId + "block\"><input type='text' id=\"" + tweetId + "reply\"/><button class='btn btn-xs btn-info' type='btn' onclick=\"reply('" + tweetId + "','" + item.Author.ScreenName + "')\">Reply</button></div></div>");
+                                $("#" + tweetId + "block").hide();
                             });
                         }
                     });
@@ -290,79 +314,108 @@
                 }
 
             </script>
-            <div class="sm-col w70" id="profilebgimg">
-                
-            </div>
+
             <div class="sm-col w70">
                 <div id="profilepage"></div>
                 <button id="MoreProfileTweets" class="btn btn-info col-centered" style="margin-left:30%">More ... </button>
             </div>
             <div class="sm-col w70" id="tweetLoc">
-                
+
             </div>
-            <div class="sm-col w70" id="homepage">
-                <div class="sm-user-info">
-                    <h4>@userProfile.Name</h4>
-                </div>
-                <div class="sm-create-post-cont">
-                    <label> Compose your post </label>
-                    <textarea id="statusText"></textarea>
-                    <button class="sm-btn" onclick="updateStatus($('#statusText').val(),'@userName','@Nick')">Post</button>
-                </div>
-                <div class="sm-user-info">
-                    <h4>Posts and Feeds</h4>
-                </div>
-                <div id="HomeTweets">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div id="homepage">
+                            <div class="sm-create-post-cont">
+                                <label> Compose your post </label>
+                                <textarea id="statusText"></textarea>
+                                <button class="sm-btn" onclick="updateStatus($('#statusText').val(),'@userName','@Nick')">Post</button>
+                            </div>
+                            <div class="sm-user-info">
+                                <h4>Posts and Feeds</h4>
+                            </div>
+                            <!--<div id="HomeTweets">
 
-                </div>
-                <button id="MoreTweets" class="btn btn-info col-centered" style="margin-left:30%">More ... </button>
-            </div>
-            <div class="sm-col w25">
+                            </div>-->
+                            <div ng-repeat="tweet in tweets" class="sm-posts-cont">
+                                <div class="media">
+                                    <div class="media-left">
+                                        <img ng-src="{{tweet.Author.ProfileImageUrl}}" class="thumbnail media-object" alt="profile Image" />                                       
+                                    </div>
+                                    <div class="media-body">
+                                        <h5 class="text-primary">{{tweet.Author.ScreenName}} <span class="label label-default pull-right">{{tweet.CreatedDate | toDate}}</span></h5>
+                                        <p>{{tweet.Text}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class='sm-action-cont'>
+                                            <a href='#' ng-click="retweet(tweet.Id)">{{tweet.RetweetCount}} Retweet</a>                                            
+                                            <a role="button" data-toggle="collapse" href="#{{tweet.Id}}" aria-expanded="false" aria-controls="{{tweet.Id}}">
+                                                Comment
+                                            </a>
+                                            <a href='#' ng-click="deleteTweet(tweet.Id)">Delete</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="collapse" id="{{tweet.Id}}">
+                                    <div class="well">                                        
+                                        <input type='text' ng-model="tweet.newComment" />
+                                        <button class='btn btn-xs btn-info' type='button' ng-click="reply(tweet)">Reply</button>                                       
+                                    </div>
+                                </div>
+                            </div>
+                            <button id="MoreTweets" class="btn btn-info col-centered" style="margin-left:30%">More ... </button>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="active"><a href="#profile" role="tab" data-toggle="tab">Profile</a></li>
+                            <li><a href="#content" role="tab" data-toggle="tab">Content</a></li>
+                            <li><a href="#mentions" role="tab" data-toggle="tab">Mentions</a></li>
+                        </ul>
 
-                <ul class="nav nav-tabs" role="tablist">
-                    <li class="active"><a href="#profile" role="tab" data-toggle="tab">Profile</a></li>
-                    <li><a href="#content" role="tab" data-toggle="tab">Content</a></li>
-                    <li><a href="#mentions" role="tab" data-toggle="tab">Mentions</a></li>
-                </ul>
-
-                <div class="tab-content">
-                    <div class="tab-pane active" id="profile">
-                        <div class="sm-search-cont sm-pull-right-20 sm-pull-down-45">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Screen Name" id="screenName">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" id="screenBtn" type="button">View</button>
-                                </span>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="profile">
+                                <div class="sm-search-cont sm-pull-right-20 sm-pull-down-45">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Screen Name" id="screenName">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default" id="screenBtn" type="button">View</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="content">
+                                <div class="sm-search-cont sm-pull-right-20 sm-pull-down-45">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Search people, page, group" id="searchTerm">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default" id="searchBtn" type="button">Search</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="mentions">
+                                <div class="list-group" id="mentionsList">
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="tab-pane" id="content">
-                        <div class="sm-search-cont sm-pull-right-20 sm-pull-down-45">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search people, page, group" id="searchTerm">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" id="searchBtn" type="button">Search</button>
-                                </span>
-                            </div>
+
+
+                        <div class="sm-search-cont sm-pull-right-20 sm-pull-down-45" id="BasicInfo">
+
                         </div>
-                    </div>
-                    <div class="tab-pane" id="mentions">
-                        <div class="list-group" id="mentionsList">
+
+                        <div class="sm-search-cont sm-pull-right-20 sm-pull-down-45" id="FollowDiv">
+                            <button id="follow" class="btn btn-xs btn-success" onclick="follow(); return false;">Follow</button>
+                            <button id="unfollow" class="btn btn-xs btn-danger" onclick="unfollow(); return false;">Unfollow</button>
                         </div>
                     </div>
                 </div>
-
-
-                <div class="sm-search-cont sm-pull-right-20 sm-pull-down-45" id="BasicInfo">
-                    
-                </div>
-
-                <div class="sm-search-cont sm-pull-right-20 sm-pull-down-45" id="FollowDiv">
-                    <button id="follow" class="btn btn-xs btn-success" onclick="follow(); return false;">Follow</button>
-                    <button id="unfollow" class="btn btn-xs btn-danger" onclick="unfollow(); return false;">Unfollow</button>
-                </div>
-
             </div>
+
+
         </section>
         <script type="text/javascript">
             $(document).ready(function () {
@@ -376,7 +429,7 @@
                     $("#MoreProfileTweets").show();
                 });
                 getMentions('@userName', '@Nick');
-                getHomeTweets('@userName', '@Nick');
+                //getHomeTweets('@userName', '@Nick');
                 $('#FollowDiv').hide();
                 $("#MoreTweets").click(function () {
                     getHomeTweetsPrev('@userName', '@Nick', LastTweetId);

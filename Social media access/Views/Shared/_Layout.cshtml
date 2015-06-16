@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="smApp">
 <head>
     <meta charset="utf-8" />
     <title>@ViewBag.Title - Social media </title>
@@ -8,11 +8,16 @@
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <meta name="viewport" content="width=device-width" />
     <script type="text/javascript" src="~/Scripts/jquery-1.9.1.js"></script>
+    <script src="~/Scripts/lib/angular.js"></script>
     <script type="text/javascript" src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Scripts/common/smModule.js"></script>
+    <script src="~/Scripts/filters/smFilters.js"></script>
+    <script src="~/Scripts/services/smProfileService.js"></script>
+    <script src="~/Scripts/controllers/smProfileCtrl.js"></script>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
-<body>
+<body ng-cloak>
     @RenderBody()
     @RenderSection("scripts", required: false)
 
