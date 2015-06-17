@@ -116,12 +116,14 @@ a {
 	display: block;
 	margin-bottom: 10px;
 }
+textarea {    
+	resize: none;
+}
 .sm-create-post-cont textarea{
 	width: 99%;
 	height: 100px;	
 	margin-bottom: 10px;
 	border: 1px solid #13B8C5;
-	resize: none;
 }
 .sm-btn {
 	background: #3089D4;
@@ -234,8 +236,14 @@ a {
 .margin-tp-20 {
     margin-top: 20px;
 }
+.margin-tp-5 {
+    margin-top: 5px;
+}
 .align-right {
     text-align: right;
+}
+.sm-align-center {
+    text-align: center;
 }
 .error{
     color: #A94442;
@@ -243,4 +251,15 @@ a {
 }
 .sm-sub-header{
     color: #286090;
+}
+.sm-loader-container{
+    text-align: center;
+}
+.sm-loader {
+    background: url('Images/loader-dot.gif') #E6E6E6 no-repeat;
+    width: 80px;    
+    margin-left: -77px;
+    display: inline-block;    
+    vertical-align: middle;
+    padding: 12px 0;
 }

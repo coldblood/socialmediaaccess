@@ -35,19 +35,7 @@
             var userInfo = { userName: '@userName', Nick: '@Nick' };
         </script>
         <!-- Temporary END-->
-        <script type="text/javascript">
-            function updateStatus(statusText) {
-                $('#statusText').attr('readonly', 'readonly');
-                $.ajax({
-                    type: "POST",
-                    url: "/Twitter/UpdateStatus",
-                    data: { statusText: $('#statusText').val(), nickName: '@Nick', user: '@userName'},
-                    success: function () {
-                        $('#statusText').removeAttr('readonly');
-                        $('#statusText').val("");
-                    }
-                });
-            }
+        <script type="text/javascript">          
 
             function showComment(tweetId) {
                 var comment = document.getElementById(tweetId + "block");
@@ -232,26 +220,7 @@
             <script type="text/javascript">
                 var LastTweetId = '@LastTweetId';
                 var FirstTweetId = '@FirstTweetId';
-                function getHomeTweets(user, nick) {
-                    $.ajax({
-                        type: "GET",
-                        url: "/Twitter/GetHomeTweets",
-                        data: { userName: user, Nick: nick },
-                        success: function (data) {
-                            $('#profilepage').hide();
-                            $('#HomeTweets').html('');
-                            $('#homepage').show();
-                            data.forEach(function (item) {
-                                var substringedDate = item.CreatedDate.substring(6);
-                                var parsedIntDate = parseInt(substringedDate);
-                                var date = new Date(parsedIntDate);
-                                var tweetId = item.IdStr;
-                                $('#HomeTweets').append("<div class='sm-posts-cont'><div style='float:left;padding-right:1%'><img src='" + item.Author.ProfileImageUrl + "' /></div><div><h4 style='color: #2884C4'>" + item.Author.ScreenName + "</h4><h5>" + date + "</h5><p>" + item.Text + "</p><div class='sm-action-cont'><a href='#' onclick=\"retweet('" + tweetId + "');return false;\">" + item.RetweetCount + " Retweet</a><a href='#' onclick=\"showComment('" + tweetId + "');return false;\">Comment</a><a href='#' onclick=\"deleteTweet('" + tweetId + "');return false;\">Delete</a></div></div><div id=\"" + tweetId + "block\"><input type='text' id=\"" + tweetId + "reply\"/><button class='btn btn-xs btn-info' type='btn' onclick=\"reply('" + tweetId + "','" + item.Author.ScreenName + "')\">Reply</button></div></div>");
-                                $("#" + tweetId + "block").hide();
-                            });
-                        }
-                    });
-                }
+                
 
                 function getHomeTweetsSince(user, nick, id) {
                     $.ajax({
@@ -270,48 +239,7 @@
                             });
                         }
                     });
-                }
-
-                function getHomeTweetsPrev(user, nick, id) {
-                    $.ajax({
-                        type: "GET",
-                        url: "/Twitter/GetHomeTweetsPrev",
-                        data: { userName: user, Nick: nick, id: id },
-                        success: function (data) {
-                            LastTweetId = (data[data.length - 1]).IdStr;
-                            data.forEach(function (item) {
-                                var substringedDate = item.CreatedDate.substring(6);
-                                var parsedIntDate = parseInt(substringedDate);
-                                var date = new Date(parsedIntDate);
-                                var tweetId = item.Id;
-                                $('#HomeTweets').append("<div class='sm-posts-cont'><div style='float:left;padding-right:1%'><img src='" + item.Author.ProfileImageUrl + "' /></div><div><h4 style='color: #2884C4'>" + item.Author.ScreenName + "</h4><h5>" + date + "</h5><p>" + item.Text + "</p><div class='sm-action-cont'><a href='#' onclick=\"retweet('" + tweetId + "');return false;\">" + item.RetweetCount + " Retweet</a><a href='#' onclick=\"showComment('" + tweetId + "');return false;\">Comment</a><a href='#' onclick=\"deleteTweet('" + tweetId + "');return false;\">Delete</a></div></div><div id=\"" + tweetId + "block\"><input type='text' id=\"" + tweetId + "reply\"/><button class='btn btn-xs btn-info' type='btn' onclick=\"reply('" + tweetId + "','" + item.Author.ScreenName + "')\">Reply</button></div></div>");
-                                $("#" + tweetId + "block").hide();
-                            });
-                        }
-                    });
-                }
-
-                function retweet(id) {
-                    $.ajax({
-                        type: "GET",
-                        url: "/Twitter/Retweet",
-                        data: { userName: '@userName', Nick: '@Nick', id: id },
-                        success: function (data) {
-                            console.log(data);
-                        }
-                    });
-                }
-
-                function deleteTweet(id) {
-                    $.ajax({
-                        type: "GET",
-                        url: "/Twitter/Delete",
-                        data: { userName: '@userName', Nick: '@Nick', id: id },
-                        success: function (data) {
-                            console.log(data);
-                        }
-                    });
-                }
+                }                
 
             </script>
 
@@ -328,15 +256,12 @@
                         <div id="homepage">
                             <div class="sm-create-post-cont">
                                 <label> Compose your post </label>
-                                <textarea id="statusText"></textarea>
-                                <button class="sm-btn" onclick="updateStatus($('#statusText').val(),'@userName','@Nick')">Post</button>
+                                <textarea ng-model="newPost.status" ng-disabled="disableStatusBox"></textarea>
+                                <button class="btn btn-primary" ng-click="updateStatus(newPost.status)" ng-disabled="!newPost.status">Post</button>
                             </div>
                             <div class="sm-user-info">
                                 <h4>Posts and Feeds</h4>
                             </div>
-                            <!--<div id="HomeTweets">
-
-                            </div>-->
                             <div ng-repeat="tweet in tweets" class="sm-posts-cont">
                                 <div class="media">
                                     <div class="media-left">
@@ -359,13 +284,17 @@
                                     </div>
                                 </div>
                                 <div class="collapse" id="{{tweet.Id}}">
-                                    <div class="well">                                        
-                                        <input type='text' ng-model="tweet.newComment" />
-                                        <button class='btn btn-xs btn-info' type='button' ng-click="reply(tweet)">Reply</button>                                       
+                                    <div class="well well-sm">
+                                        <textarea ng-model="tweet.newComment" class="form-control"></textarea>
+                                        <button class="btn btn-sm btn-primary margin-tp-5" type="button" ng-click="reply(tweet)" ng-disabled="!tweet.newComment">Comment</button>
                                     </div>
                                 </div>
                             </div>
-                            <button id="MoreTweets" class="btn btn-info col-centered" style="margin-left:30%">More ... </button>
+                            <div class="sm-loader-container">
+                                <button class="btn btn-warning btn-xs" type="button" ng-click="loadMoreTweets()">Load More</button>
+                                <span class="sm-loader" ng-show="showLoader"></span>
+                            </div>
+                            
                         </div>
                     </div>
                     <div class="col-lg-4">
@@ -429,14 +358,7 @@
                     $("#MoreProfileTweets").show();
                 });
                 getMentions('@userName', '@Nick');
-                //getHomeTweets('@userName', '@Nick');
                 $('#FollowDiv').hide();
-                $("#MoreTweets").click(function () {
-                    getHomeTweetsPrev('@userName', '@Nick', LastTweetId);
-                });
-                $("#MoreProfileTweets").click(function () {
-                    getTweetsPrev('@userName',$('#screenName').val(), '@Nick', LastProfileTweetId);
-                });
                 $("#RefreshTweets").click(function () {
                     getHomeTweetsSince('@userName', '@Nick', FirstTweetId);
                 });
