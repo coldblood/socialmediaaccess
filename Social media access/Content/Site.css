@@ -10,8 +10,12 @@
     margin-bottom: 40px;
     border-radius: 0 0 5px 5px;
 }
-.header h1{    
-    font-size: 30px;
+.header h1 {    
+    font-size: 25px;
+}
+.header h1 a,.header h1 a:hover {    
+    text-decoration: none;
+    color: #fff;
 }
 .header .user{ 
 	font-size: 14px;
