@@ -263,6 +263,7 @@
     <Content Include="Content\Images\fb.png" />
     <Content Include="Content\Images\infoiconblue.png" />
     <Content Include="Content\Images\linkedin.png" />
+    <Content Include="Content\Images\loader-dot-big.gif" />
     <Content Include="Content\Images\loader-dot.gif" />
     <Content Include="Content\Images\spinner.gif" />
     <Content Include="Content\Images\twitter.jpg" />
