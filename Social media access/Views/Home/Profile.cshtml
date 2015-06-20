@@ -2,12 +2,12 @@
     @{
         ViewBag.Title = "Home";
         var Nick = Request.Params["Nick"];
-        var currentUser = Membership.GetUser(User.Identity.Name);
-        if (currentUser == null)
-        {
-            Response.Redirect("~/Account/Login");
-        }
-        var userName = currentUser.UserName;
+        //var currentUser = Membership.GetUser(User.Identity.Name);
+        //if (currentUser == null)
+        //{
+        //    Response.Redirect("~/Account/Login");
+        //}
+        var userName = "Simbu";
     }
     <!-- Header -->
     <header class="header">
@@ -71,10 +71,9 @@
                 long FirstTweetId = tweets.First().Id;
             }
             <script type="text/javascript">
+                /* Temporary */
                 var LastTweetId = '@LastTweetId';
                 var FirstTweetId = '@FirstTweetId';
-
-                /* Temporary */
                 var userInfo = { userName: '@userName', Nick: '@Nick' };
             </script>
 
