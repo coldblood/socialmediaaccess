@@ -107,6 +107,13 @@ smApp.controller('smProfileCtrl', ['$scope', 'smProfileApi', function ($scope, s
                     $scope.showBackDrop = false;
                     console.log('Unable to get your tweets');
                 });
+            } else {
+                $scope.tweets = [];
+                $scope.profile = {};
+                $scope.myProfile = false;
+                $scope.hideStatusBox = true;
+                $scope.hideHeader = false;
+                $scope.showBackDrop = false;
             }
         }, function () {
             $scope.showBackDrop = false;

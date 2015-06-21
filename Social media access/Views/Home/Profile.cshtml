@@ -7,14 +7,14 @@
         //{
         //    Response.Redirect("~/Account/Login");
         //}
-        var userName = "Simbu";
+        var userName = "suryanak9";
     }
     <!-- Header -->
     <header class="header">
         <h1>
             <a href="/Home/Index">msSocial</a>
             <div class="btn-group pull-right">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                     @userName <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" role="menu">
@@ -28,19 +28,19 @@
         <!-- Page Header and Search Control -->
         <div class="row">
             <div class="col-lg-8 sm-sub-header" ng-show="myProfile && !hideHeader">
-                <h3>@Nick</h3>
+                <h4>@Nick</h4>
             </div>
             <div class="col-lg-8 sm-sub-header" ng-hide="myProfile || hideHeader">
-                <h3>
+                <h4 ng-show="profile.Name">
                     {{profile.Name}}
                     <button type="button" ng-click="unfollow(profile.ScreenName)" class="btn btn-danger btn-xs pull-right">Unfollow</button>
                     <button type="button" ng-click="follow(profile.ScreenName)" class="btn btn-success btn-xs pull-right">Follow</button>
-                </h3>
+                </h4>
             </div>
             <div class="col-lg-8 sm-sub-header" ng-hide="!hideHeader">
-                <h3>
+                <h4>
                     Search results for "{{searchStr}}"
-                </h3>
+                </h4>
             </div>
             <div class="col-lg-4">
                 <div class="input-group">
@@ -87,50 +87,59 @@
                                 <textarea ng-model="newPost.status" ng-disabled="disableStatusBox"></textarea>
                                 <button class="btn btn-primary" ng-click="updateStatus(newPost.status)" ng-disabled="!newPost.status">Post</button>
                             </div>
-                            <div class="sm-user-info">
-                                <h4>Posts and Feeds</h4>
-                            </div>
-                            <div ng-repeat="tweet in tweets" class="sm-posts-cont">
-                                <div class="media">
-                                    <div class="media-left">
-                                        <img ng-src="{{tweet.Author.ProfileImageUrl}}" class="thumbnail media-object" alt="profile Image" />
-                                    </div>
-                                    <div class="media-body">
-                                        <h5 class="text-primary">{{tweet.Author.ScreenName}} <span class="label label-default pull-right">{{tweet.CreatedDate | toDate}}</span></h5>
-                                        <p>{{tweet.Text}}</p>
-                                    </div>
+                            <div ng-if="tweets.length>0">
+                                <div class="sm-user-info">
+                                    <h4>Posts and Feeds</h4>
                                 </div>
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class='sm-action-cont'>
-                                            <a href='#' ng-click="retweet(tweet.Id)">{{tweet.RetweetCount}} Retweet</a>
-                                            <a role="button" data-toggle="collapse" href="#{{tweet.Id}}" aria-expanded="false" aria-controls="{{tweet.Id}}">
-                                                Comment
-                                            </a>
-                                            <a href='#' ng-click="deleteTweet(tweet.Id)">Delete</a>
+                                <div ng-repeat="tweet in tweets" class="sm-posts-cont">
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <img ng-src="{{tweet.Author.ProfileImageUrl}}" class="thumbnail media-object" alt="profile Image" />
+                                        </div>
+                                        <div class="media-body">
+                                            <h5 class="text-primary">{{tweet.Author.ScreenName}} <span class="label label-default pull-right">{{tweet.CreatedDate | toDate}}</span></h5>
+                                            <p>{{tweet.Text}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class='sm-action-cont'>
+                                                <a href='#' ng-click="retweet(tweet.Id)">{{tweet.RetweetCount}} Retweet</a>
+                                                <a role="button" data-toggle="collapse" href="#{{tweet.Id}}" aria-expanded="false" aria-controls="{{tweet.Id}}">
+                                                    Comment
+                                                </a>
+                                                <a href='#' ng-click="deleteTweet(tweet.Id)">Delete</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="collapse" id="{{tweet.Id}}">
+                                        <div class="well well-sm">
+                                            <textarea ng-model="tweet.newComment" class="form-control"></textarea>
+                                            <button class="btn btn-sm btn-primary margin-tp-5" type="button" ng-click="reply(tweet)" ng-disabled="!tweet.newComment">Reply</button>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="collapse" id="{{tweet.Id}}">
-                                    <div class="well well-sm">
-                                        <textarea ng-model="tweet.newComment" class="form-control"></textarea>
-                                        <button class="btn btn-sm btn-primary margin-tp-5" type="button" ng-click="reply(tweet)" ng-disabled="!tweet.newComment">Reply</button>
-                                    </div>
+                                <div class="sm-loader-container" ng-show="myProfile">
+                                    <button class="btn btn-default btn-sm" type="button" ng-click="loadMoreTweets()">Load More <span class="badge">+</span></button>
+                                    <span class="sm-loader" ng-show="showLoader"></span>
+                                </div>
+                                <div class="sm-loader-container" ng-hide="myProfile">
+                                    <button class="btn btn-default btn-sm" type="button" ng-click="loadMoreProfileTweets(profile.ScreenName)">Load More <span class="badge">+</span></button>
+                                    <span class="sm-loader" ng-show="showLoader"></span>
                                 </div>
                             </div>
-                            <div class="sm-loader-container" ng-show="myProfile">
-                                <button class="btn btn-default btn-sm" type="button" ng-click="loadMoreTweets()">Load More <span class="badge">+</span></button>
-                                <span class="sm-loader" ng-show="showLoader"></span>
-                            </div>
-                            <div class="sm-loader-container" ng-hide="myProfile">
-                                <button class="btn btn-default btn-sm" type="button" ng-click="loadMoreProfileTweets(profile.ScreenName)">Load More <span class="badge">+</span></button>
-                                <span class="sm-loader" ng-show="showLoader"></span>
-                            </div>
+                            <div ng-if="tweets.length == 0" class="sm-no-results">
+                                <div>
+                                    <img src="~/Content/Images/noresults.png" alt="No results Image"/>
+                                </div>
+                                <p>We could not find any results for your search.</p>
+                                <p>Please modify your search and try again.</p> 
+                            </div>                           
 
                         </div>
                     </div>
                     <div class="col-lg-4">
-                        <div ng-show="mentions.length > 0">
+                        <div ng-show="mentions.length > 0 && myProfile">
                             <h4>Mentions</h4>
                             <ul>
                                 <li ng-repeat="item in mentions">
