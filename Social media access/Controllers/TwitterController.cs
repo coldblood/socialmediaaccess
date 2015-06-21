@@ -47,7 +47,7 @@ namespace Social_media_access.Controllers
         }
 
         [HttpPost]
-        public JsonResult UpdateStatus(string statusText, string user, string nickName)
+        public JsonResult UpdateStatus(string statusText, string userName, string Nick)
         {
             SocialMediaEntities SocialMediaContext = new SocialMediaEntities();
             Tweet Tweet = new Tweet();
@@ -61,10 +61,10 @@ namespace Social_media_access.Controllers
             postData += "\"variables\":[";
             postData += "{\"name\":\"tweet\",";
             postData += "\"value\":\"" + Tweet.Text + "\"}";
-            postData += ",{\"name\":\"user\",";
-            postData += "\"value\":\""+user+"\"}";
-            postData += ",{\"name\":\"nick\",";
-            postData += "\"value\":\"" + nickName + "\"}";
+            postData += ",{\"name\":\"userName\",";
+            postData += "\"value\":\""+userName+"\"}";
+            postData += ",{\"name\":\"Nick\",";
+            postData += "\"value\":\"" + Nick + "\"}";
             postData += "]}";
             byte[] data = encoding.GetBytes(postData);
 
@@ -87,9 +87,9 @@ namespace Social_media_access.Controllers
         }
 
         [HttpGet]
-        public void ProcessTweet(string status, string user, string nick)
+        public void ProcessTweet(string status, string userName, string Nick)
         {
-            var twitterSecret = new TwitterSecretData(user, nick);
+            var twitterSecret = new TwitterSecretData(userName, Nick);
             var service = new TwitterService(twitterSecret._OAuthConsumerKey, twitterSecret._OAuthConsumerSecret);
             service.AuthenticateWith(twitterSecret._OAuthAccessToken, twitterSecret._OAuthAccessTokenSecret);
             var sendTweetOptions = new SendTweetOptions();
@@ -98,9 +98,9 @@ namespace Social_media_access.Controllers
         }
 
         [HttpGet]
-        public void ProcessReply(string statusId, string user, string screenName, string nick, string text)
+        public void ProcessReply(string statusId, string userName, string screenName, string Nick, string text)
         {
-            var twitterSecret = new TwitterSecretData(user, nick);
+            var twitterSecret = new TwitterSecretData(userName, Nick);
             var service = new TwitterService(twitterSecret._OAuthConsumerKey, twitterSecret._OAuthConsumerSecret);
             service.AuthenticateWith(twitterSecret._OAuthAccessToken, twitterSecret._OAuthAccessTokenSecret);
             var sendTweetOptions = new SendTweetOptions();
@@ -110,7 +110,7 @@ namespace Social_media_access.Controllers
         }
 
         [HttpGet]
-        public void ReplyTweet(long statusId, string user, string screenName, string nick, string text)
+        public void ReplyTweet(long statusId, string userName, string screenName, string Nick, string text)
         {
             ASCIIEncoding encoding = new ASCIIEncoding();
             string postData = "{\"processDefinitionId\":\"" + ConfigurationManager.AppSettings["commentProcessDefinitionId"] + "\",";
@@ -118,9 +118,9 @@ namespace Social_media_access.Controllers
             postData += "{\"name\":\"reply\",";
             postData += "\"value\":\"" + text + "\"}";
             postData += ",{\"name\":\"user\",";
-            postData += "\"value\":\"" + user + "\"}";
+            postData += "\"value\":\"" + userName + "\"}";
             postData += ",{\"name\":\"nick\",";
-            postData += "\"value\":\"" + nick + "\"}";
+            postData += "\"value\":\"" + Nick + "\"}";
             postData += ",{\"name\":\"id\",";
             postData += "\"value\":\"" + statusId + "\"}";
             postData += ",{\"name\":\"screen\",";
@@ -150,9 +150,9 @@ namespace Social_media_access.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetHomeTweets(string userName, string nick)
+        public JsonResult GetHomeTweets(string userName, string Nick)
         {
-            var twitterSecret = new TwitterSecretData(userName, nick);
+            var twitterSecret = new TwitterSecretData(userName, Nick);
             var service = new TwitterService(twitterSecret._OAuthConsumerKey, twitterSecret._OAuthConsumerSecret);
             service.AuthenticateWith(twitterSecret._OAuthAccessToken, twitterSecret._OAuthAccessTokenSecret);
             var tweets = service.ListTweetsOnHomeTimeline(new TweetSharp.ListTweetsOnHomeTimelineOptions { Count = 10 });
@@ -160,9 +160,9 @@ namespace Social_media_access.Controllers
         }
 
         [HttpGet]
-        public string Delete(string userName, string nick, long id)
+        public string Delete(string userName, string Nick, long id)
         {
-            var twitterSecret = new TwitterSecretData(userName, nick);
+            var twitterSecret = new TwitterSecretData(userName, Nick);
             var service = new TwitterService(twitterSecret._OAuthConsumerKey, twitterSecret._OAuthConsumerSecret);
             service.AuthenticateWith(twitterSecret._OAuthAccessToken, twitterSecret._OAuthAccessTokenSecret);
             var Del = service.DeleteTweet(new DeleteTweetOptions { Id = id });
@@ -170,9 +170,9 @@ namespace Social_media_access.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetTweets(string userName, string screenName, string nick)
+        public JsonResult GetTweets(string userName, string screenName, string Nick)
         {
-            var twitterSecret = new TwitterSecretData(userName, nick);
+            var twitterSecret = new TwitterSecretData(userName, Nick);
             var service = new TwitterService(twitterSecret._OAuthConsumerKey, twitterSecret._OAuthConsumerSecret);
             service.AuthenticateWith(twitterSecret._OAuthAccessToken, twitterSecret._OAuthAccessTokenSecret);
             var tweets = service.ListTweetsOnUserTimeline(new TweetSharp.ListTweetsOnUserTimelineOptions { ScreenName = screenName, Count = 10 });
@@ -216,9 +216,9 @@ namespace Social_media_access.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetTweetsSince(string userName, string screenName, string nick, long id)
+        public JsonResult GetTweetsSince(string userName, string screenName, string Nick, long id)
         {
-            var twitterSecret = new TwitterSecretData(userName, nick);
+            var twitterSecret = new TwitterSecretData(userName, Nick);
             var service = new TwitterService(twitterSecret._OAuthConsumerKey, twitterSecret._OAuthConsumerSecret);
             service.AuthenticateWith(twitterSecret._OAuthAccessToken, twitterSecret._OAuthAccessTokenSecret);
             var tweets = service.ListTweetsOnUserTimeline(new TweetSharp.ListTweetsOnUserTimelineOptions { ScreenName = screenName, Count = 10, SinceId = id });
@@ -226,9 +226,9 @@ namespace Social_media_access.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetTweetsPrev(string userName, string screenName, string nick, long id)
+        public JsonResult GetTweetsPrev(string userName, string screenName, string Nick, long id)
         {
-            var twitterSecret = new TwitterSecretData(userName, nick);
+            var twitterSecret = new TwitterSecretData(userName, Nick);
             var service = new TwitterService(twitterSecret._OAuthConsumerKey, twitterSecret._OAuthConsumerSecret);
             service.AuthenticateWith(twitterSecret._OAuthAccessToken, twitterSecret._OAuthAccessTokenSecret);
             var tweets = service.ListTweetsOnUserTimeline(new TweetSharp.ListTweetsOnUserTimelineOptions { ScreenName = screenName, Count = 10, MaxId = id });
@@ -236,9 +236,9 @@ namespace Social_media_access.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetMentions(string userName, string nick)
+        public JsonResult GetMentions(string userName, string Nick)
         {
-            var twitterSecret = new TwitterSecretData(userName, nick);
+            var twitterSecret = new TwitterSecretData(userName, Nick);
             var service = new TwitterService(twitterSecret._OAuthConsumerKey, twitterSecret._OAuthConsumerSecret);
             service.AuthenticateWith(twitterSecret._OAuthAccessToken, twitterSecret._OAuthAccessTokenSecret);
             ListTweetsMentioningMeOptions _ListTweetsMentioningMeOptions = new ListTweetsMentioningMeOptions();
@@ -247,9 +247,9 @@ namespace Social_media_access.Controllers
         }
 
         [HttpGet]
-        public string Follow(string userName, string nick, string screenName)
+        public string Follow(string userName, string Nick, string screenName)
         {
-            var twitterSecret = new TwitterSecretData(userName, nick);
+            var twitterSecret = new TwitterSecretData(userName, Nick);
             var service = new TwitterService(twitterSecret._OAuthConsumerKey, twitterSecret._OAuthConsumerSecret);
             service.AuthenticateWith(twitterSecret._OAuthAccessToken, twitterSecret._OAuthAccessTokenSecret);
             FollowUserOptions _FollowUserOptions = new TweetSharp.FollowUserOptions();
@@ -260,9 +260,9 @@ namespace Social_media_access.Controllers
 
 
         [HttpGet]
-        public JsonResult GetBasicInfo(string userName, string nick, string screenName)
+        public JsonResult GetBasicInfo(string userName, string Nick, string screenName)
         {
-            var twitterSecret = new TwitterSecretData(userName, nick);
+            var twitterSecret = new TwitterSecretData(userName, Nick);
             var service = new TwitterService(twitterSecret._OAuthConsumerKey, twitterSecret._OAuthConsumerSecret);
             service.AuthenticateWith(twitterSecret._OAuthAccessToken, twitterSecret._OAuthAccessTokenSecret);
             var profile = service.GetUserProfileFor(new GetUserProfileForOptions { ScreenName = screenName });
@@ -270,9 +270,9 @@ namespace Social_media_access.Controllers
         }
 
         [HttpGet]
-        public string UnFollow(string userName, string nick, string screenName)
+        public string UnFollow(string userName, string Nick, string screenName)
         {
-            var twitterSecret = new TwitterSecretData(userName, nick);
+            var twitterSecret = new TwitterSecretData(userName, Nick);
             var service = new TwitterService(twitterSecret._OAuthConsumerKey, twitterSecret._OAuthConsumerSecret);
             service.AuthenticateWith(twitterSecret._OAuthAccessToken, twitterSecret._OAuthAccessTokenSecret);
             UnfollowUserOptions _UnFollowUserOptions = new TweetSharp.UnfollowUserOptions();
@@ -289,7 +289,7 @@ namespace Social_media_access.Controllers
         }
 
         [HttpPost]
-        public string AddAccount(string accessToken, string accessTokenSecret, string consumerKey, string consumerKeySecret, string userName, string nick)
+        public string AddAccount(string accessToken, string accessTokenSecret, string consumerKey, string consumerKeySecret, string userName, string Nick)
         {
             SocialMediaEntities SocialMediaContext = new SocialMediaEntities();
             TwitterSecret data = new TwitterSecret();
@@ -298,7 +298,7 @@ namespace Social_media_access.Controllers
             data.ConsumerKey = consumerKey;
             data.ConsumerSecret = consumerKeySecret;
             data.UserId = userName;
-            data.Nick = nick;
+            data.Nick = Nick;
             SocialMediaContext.TwitterSecrets.Add(data);
             SocialMediaContext.SaveChanges();
             return "success";

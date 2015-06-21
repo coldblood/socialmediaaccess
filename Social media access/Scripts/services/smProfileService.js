@@ -12,6 +12,7 @@ smApp.service('smProfileApi', ['$http', function ($http) {
         loadMoreTweetUrl = "/Twitter/GetHomeTweetsPrev",
         updateStatusUrl = "/Twitter/UpdateStatus",
         getTweetsUrl = "/Twitter/GetTweets",
+        getHomeTweetsUrl = "/Twitter/GetHomeTweets",
         getBasicInfoUrl = "/Twitter/GetBasicInfo",
         followUrl = "/Twitter/Follow",
         unfollowUrl = "/Twitter/UnFollow",
@@ -21,7 +22,7 @@ smApp.service('smProfileApi', ['$http', function ($http) {
 
     /* Get tweets of logged in user */
     this.getHomeTweets = function (payload) {
-        return $http.get(getTweetsUrl, { params: payload }).then(success, fail);
+        return $http.get(getHomeTweetsUrl, { params: payload }).then(success, fail);
     }
     this.reTweet = function (payload) {
         return $http.get(retweetUrl, { params: payload }).then(success, fail);
