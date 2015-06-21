@@ -34,7 +34,24 @@ namespace Social_media_access.Controllers
         //    var oAuthTwitterWrapper = new OAuthTwitterWrapper.OAuthTwitterWrapper(new TwitterSecret(), new TwitterTimelineSettings(), new TwitterSearchSettings());
         //    return oAuthTwitterWrapper.GetMyTimeline();
         //}
-
+        [HttpGet]
+        public JsonResult GetAddedccounts()
+        {
+            List<SelectListItem> twitterSecretsMap = new List<SelectListItem>();
+            try
+            {
+                var context = new Social_media_access.SocialMediaEntities();
+                context.TwitterSecrets.ToList().ForEach(i => twitterSecretsMap.Add(new SelectListItem()
+                {
+                    Text = i.Nick,
+                    Value = i.Nick
+                }));
+                return Json(twitterSecretsMap, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex) {
+                return Json(ex, JsonRequestBehavior.AllowGet);
+            }
+        }
         [HttpGet]
         public JsonResult Search(string userName, string term, string Nick)
         {
