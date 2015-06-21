@@ -265,6 +265,7 @@
     <Content Include="Content\Images\linkedin.png" />
     <Content Include="Content\Images\loader-dot-big.gif" />
     <Content Include="Content\Images\loader-dot.gif" />
+    <Content Include="Content\Images\noresults.png" />
     <Content Include="Content\Images\spinner.gif" />
     <Content Include="Content\Images\twitter.jpg" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
